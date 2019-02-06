@@ -1,50 +1,49 @@
 #!/usr/bin/Rscript
 #--------------------------------
-# Jansen A. Simanullang, 20.02.2016
+# Ouesmed 06-02-2019
 # cachematrix.R
 # example usage:
 #> source("cachematrix.R")
 #> aSquareMatrix <- makeCacheMatrix(matrix(0:8, 8, 8))
 #> squareMatrix$getMatrix()
-#> aSquareMatrix$getCache() # will return NULL for the 1st time
+#> aSquareMatrix$getCache()
 #> cacheSolve(aSquareMatrix)
-#> aSquareMatrix$getCache() # will return the solution
+#> aSquareMatrix$getCache()
 
 
 makeCacheMatrix <- function(x = matrix()) {
-  # 'makeCacheMatrix' 
-  # makes a cache matrix from a given matrix
-  #---------------------------------------------------------
-  # 1. initialize the cache Matrix 'cacheMatrix'
-  # assign the value NULL for the first initialization
-  
+   # 'makeCacheMatrix'
+   # crée une matrice de cache à partir d'une matrice donnée
+   # ----------------------------------------------------- --------
+   # 1. initialiser le cache Matrix 'cacheMatrix'
+   # assigner la valeur NULL pour la première initialisation
   cacheMatrix <- NULL
 
   
-  # 2. define the method named 'setMatrix'
+ # 2. définir la méthode nommée 'setMatrix'
   
   setMatrix <- function(y) {
     x <<- y
     cacheMatrix <<- NULL
   }
 
-  # 3. define the method named 'getMatrix'
-  # return the matrix 'x'
+ # 3. définir la méthode nommée 'getMatrix'
+   # retourne la matrice 'x'
   
   getMatrix <- function() x
   
-  # 4. define the method named 'setCache'
+ # 4. définir la méthode nommée 'setCache'
   
   setCache <- function(inverse) cacheMatrix <<- inverse
   
-  # 5. define the method named 'getCache'
-  # that will return the cached inverse of 'x'
+ # 5. définir la méthode nommée 'getCache'
+   # qui renverra l'inverse mis en cache de 'x'
   
   getCache <- function() cacheMatrix
   
-  # 6. list the names of all methods that will be known to the outside world
-  # although the name in this list can be different from the name of the methods defined above
-  # I choose the same name as the methods defined above for simplicity and coherence
+ # 6. énumérer les noms de toutes les méthodes qui seront connues du monde extérieur
+   # bien que le nom dans cette liste puisse être différent du nom des méthodes définies ci-dessus
+   # Je choisis le même nom que les méthodes définies ci-dessus pour plus de simplicité et de cohérence
   
   list(setMatrix = setMatrix,
        getMatrix = getMatrix,
@@ -53,24 +52,25 @@ makeCacheMatrix <- function(x = matrix()) {
   }
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-  # 'cacheSolve'
-  # return the inverse of a given matrix utilizing the cache
+   # Retourne une matrice qui est l'inverse de 'x'
+   # 'cacheSolve'
+   # retourne l'inverse d'une matrice donnée en utilisant le cache
 
-  # 1. check the content of cache matrix
+   # 1. vérifier le contenu de la matrice de cache
   
   cacheMatrix <- x$getCache()
   
-  # 2. if the content is not null then: return the result 
+ # 2.si le contenu n'est pas nul, alors: renvoyer le résultat
   
   if (!is.null(cacheMatrix)) {
     message("loading cache matrix...")
     return(cacheMatrix)
   }
   
-  # 3. if the content is empty then: 
+  # 3. Si le contenu est vide, alors:
+  
+   # récupère la matrice, crée, définit, met à jour et renvoie la matrice de cache
   
-  # get the matrix, create, set, update and return the cache matrix
   else {
     dMatrix <- x$getMatrix()
     cacheMatrix <- solve(dMatrix, ...)
